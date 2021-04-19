@@ -1,5 +1,7 @@
 let URL = "http://localhost:8000";
 
-const API = {};
+const API = {
+  addOrganization: `${URL}/organizations/add`,
+};
 
 export { URL, API };

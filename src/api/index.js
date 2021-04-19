@@ -3,4 +3,8 @@ import { API } from "./routes";
 
 export default {
   //User Route
+
+  addOrganization: (data) => {
+    return authPost(API.addOrganization, data);
+  },
 };

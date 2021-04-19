@@ -34,6 +34,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import { DocsLink } from "src/reusable";
 import useStateCallback from "src/utils/useStateCallback";
+import api from "src/api";
 
 const Organizations = () => {
   const [collapsed, setCollapsed] = React.useState(true);
@@ -65,6 +66,14 @@ const Organizations = () => {
 
   const handleSubmit = () => {
     console.table(form);
+    api
+      .addOrganization(form)
+      .then((res) => {
+        console.log("Success!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
