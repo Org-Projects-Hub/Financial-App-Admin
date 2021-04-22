@@ -16,11 +16,13 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Organizations",
     to: "/organizations",
-    icon: <CIcon name="cil-house" customClasses="c-sidebar-nav-icon" />,
-    badge: {
-      color: "info",
-      text: "NEW",
-    },
+    icon: <CIcon name="cilHome" customClasses="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Teachers",
+    to: "/teachers",
+    icon: <CIcon name="cilUser" customClasses="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavTitle",
