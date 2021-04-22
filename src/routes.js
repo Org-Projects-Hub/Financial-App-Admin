@@ -47,6 +47,9 @@ const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const Organizations = React.lazy(() =>
   import("./views/organizations/Organizations")
 );
+const AddOrganization = React.lazy(() =>
+  import("./views/organizations/AddOrganization")
+);
 const CoreUIIcons = React.lazy(() =>
   import("./views/icons/coreui-icons/CoreUIIcons")
 );
@@ -66,7 +69,17 @@ const User = React.lazy(() => import("./views/users/User"));
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
-  { path: "/organizations", name: "Organizations", component: Organizations },
+  {
+    path: "/organizations/",
+    exact: true,
+    name: "Organizations",
+    component: Organizations,
+  },
+  {
+    path: "/organizations/add",
+    name: "AddOrganization",
+    component: AddOrganization,
+  },
   { path: "/theme", name: "Theme", component: Colors, exact: true },
   { path: "/theme/colors", name: "Colors", component: Colors },
   { path: "/theme/typography", name: "Typography", component: Typography },

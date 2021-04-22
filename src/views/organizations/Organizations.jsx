@@ -1,223 +1,408 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  CButton,
+  CBadge,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
-  CCollapse,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-  CFade,
-  CForm,
-  CFormGroup,
-  CFormText,
-  CValidFeedback,
-  CInvalidFeedback,
-  CTextarea,
-  CInput,
-  CInputFile,
-  CInputCheckbox,
-  CInputRadio,
-  CInputGroup,
-  CInputGroupAppend,
-  CInputGroupPrepend,
-  CDropdown,
-  CInputGroupText,
-  CLabel,
-  CSelect,
+  CDataTable,
   CRow,
-  CSwitch,
+  CButton,
+  CCollapse,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
+
 import { DocsLink } from "src/reusable";
-import useStateCallback from "src/utils/useStateCallback";
-import api from "src/api";
 
+import Modal from "../../reusable/Modal";
+
+// import usersData from "../users/UsersData";
 const Organizations = () => {
-  const [collapsed, setCollapsed] = React.useState(true);
-  const [showElements, setShowElements] = React.useState(true);
-  const [form, setForm] = React.useState({
-    name: "",
-    strAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-  });
-  const [disabled, setDisabled] = React.useState(true);
+  const [visible, setVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState([]);
 
-  const updateDisabled = () => {
-    for (let x in form) {
-      if (form[x] == "") {
-        setDisabled(true);
-        return;
-      }
+  const tempData = [
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "Salusberry Town",
+      state: "LA",
+      zip: 71203,
+    },
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "San Francisco",
+      state: "LA",
+      zip: 71203,
+    },
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "Monroe",
+      state: "LA",
+      zip: 71203,
+    },
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "Monroe",
+      state: "LA",
+      zip: 71203,
+    },
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "Monroe",
+      state: "LA",
+      zip: 71203,
+    },
+    {
+      name: "Riser Middle School",
+      address: "201 N McGuire Ave",
+      city: "Monroe",
+      state: "LA",
+      zip: 71203,
+    },
+  ];
+  const usersData = [
+    {
+      id: 0,
+      name: "John Doe",
+      registered: "2018/01/01",
+      role: "Guest",
+      status: "Pending",
+    },
+    {
+      id: 1,
+      name: "Samppa Nori",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Active",
+    },
+    {
+      id: 2,
+      name: "Estavan Lykos",
+      registered: "2018/02/01",
+      role: "Staff",
+      status: "Banned",
+    },
+    {
+      id: 3,
+      name: "Chetan Mohamed",
+      registered: "2018/02/01",
+      role: "Admin",
+      status: "Inactive",
+    },
+    {
+      id: 4,
+      name: "Derick Maximinus",
+      registered: "2018/03/01",
+      role: "Member",
+      status: "Pending",
+    },
+    {
+      id: 5,
+      name: "Friderik Dávid",
+      registered: "2018/01/21",
+      role: "Staff",
+      status: "Active",
+    },
+    {
+      id: 6,
+      name: "Yiorgos Avraamu",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Active",
+    },
+    {
+      id: 7,
+      name: "Avram Tarasios",
+      registered: "2018/02/01",
+      role: "Staff",
+      status: "Banned",
+    },
+    {
+      id: 8,
+      name: "Quintin Ed",
+      registered: "2018/02/01",
+      role: "Admin",
+      status: "Inactive",
+    },
+    {
+      id: 9,
+      name: "Enéas Kwadwo",
+      registered: "2018/03/01",
+      role: "Member",
+      status: "Pending",
+    },
+    {
+      id: 10,
+      name: "Agapetus Tadeáš",
+      registered: "2018/01/21",
+      role: "Staff",
+      status: "Active",
+    },
+    {
+      id: 11,
+      name: "Carwyn Fachtna",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Active",
+    },
+    {
+      id: 12,
+      name: "Nehemiah Tatius",
+      registered: "2018/02/01",
+      role: "Staff",
+      status: "Banned",
+    },
+    {
+      id: 13,
+      name: "Ebbe Gemariah",
+      registered: "2018/02/01",
+      role: "Admin",
+      status: "Inactive",
+    },
+    {
+      id: 14,
+      name: "Eustorgios Amulius",
+      registered: "2018/03/01",
+      role: "Member",
+      status: "Pending",
+    },
+    {
+      id: 15,
+      name: "Leopold Gáspár",
+      registered: "2018/01/21",
+      role: "Staff",
+      status: "Active",
+    },
+    {
+      id: 16,
+      name: "Pompeius René",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Active",
+    },
+    {
+      id: 17,
+      name: "Paĉjo Jadon",
+      registered: "2018/02/01",
+      role: "Staff",
+      status: "Banned",
+    },
+    {
+      id: 18,
+      name: "Micheal Mercurius",
+      registered: "2018/02/01",
+      role: "Admin",
+      status: "Inactive",
+    },
+    {
+      id: 19,
+      name: "Ganesha Dubhghall",
+      registered: "2018/03/01",
+      role: "Member",
+      status: "Pending",
+    },
+    {
+      id: 20,
+      name: "Hiroto Šimun",
+      registered: "2018/01/21",
+      role: "Staff",
+      status: "Active",
+    },
+    {
+      id: 21,
+      name: "Vishnu Serghei",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Active",
+    },
+    {
+      id: 22,
+      name: "Zbyněk Phoibos",
+      registered: "2018/02/01",
+      role: "Staff",
+      status: "Banned",
+    },
+    {
+      id: 23,
+      name: "Aulus Agmundr",
+      registered: "2018/01/01",
+      role: "Member",
+      status: "Pending",
+    },
+    {
+      id: 42,
+      name: "Ford Prefect",
+      registered: "2001/05/25",
+      role: "Alien",
+      status: "Don't panic!",
+    },
+  ];
+
+  const [details, setDetails] = React.useState([]);
+  // const [items, setItems] = useState(usersData)
+
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index);
+    let newDetails = details.slice();
+    if (position !== -1) {
+      newDetails.splice(position, 1);
+    } else {
+      newDetails = [...details, index];
     }
-    setDisabled(false);
+    setDetails(newDetails);
   };
 
-  React.useEffect(updateDisabled, [form]);
+  const fields = [
+    { key: "name", _style: { width: "40%" } },
+    "registered",
+    { key: "role", _style: { width: "20%" } },
+    { key: "status", _style: { width: "20%" } },
+    // {
+    //   key: "show_details",
+    //   label: "",
+    //   _style: { width: "1%" },
+    //   sorter: false,
+    //   filter: false,
+    // },
+    {
+      key: "editOptions",
+      label: "",
+      _style: { width: "1%" },
+      sorter: false,
+      filter: false,
+    },
+  ];
 
-  const updateForm = (e) => {
-    setForm({ ...form, [e.target.id]: [e.target.value] });
+  const tempFields = [
+    { key: "name", _style: { width: "35%" } },
+    { key: "address", _style: { width: "30%" } },
+    { key: "city", _style: { width: "15%" } },
+    "state",
+    "zip",
+    // { key: "role", _style: { width: "20%" } },
+    // { key: "status", _style: { width: "20%" } },
+    // {
+    //   key: "show_details",
+    //   label: "",
+    //   _style: { width: "1%" },
+    //   sorter: false,
+    //   filter: false,
+    // },
+    {
+      key: "editOptions",
+      label: "",
+      _style: { width: "3%" },
+      sorter: false,
+      filter: false,
+    },
+  ];
+
+  const getBadge = (status) => {
+    switch (status) {
+      case "Active":
+        return "success";
+      case "Inactive":
+        return "secondary";
+      case "Pending":
+        return "warning";
+      case "Banned":
+        return "danger";
+      default:
+        return "primary";
+    }
   };
 
-  const handleSubmit = () => {
-    console.table(form);
-    api
-      .addOrganization(form)
-      .then((res) => {
-        console.log("Success!");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   return (
     <>
-      <CRow alignHorizontal="center">
-        <CCol xs="12" sm="6">
-          <CCard>
-            <CCardHeader className="font-weight-bold">
-              Add New Organization
-            </CCardHeader>
-            <CCardBody>
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="name">{"Organization's Name"}</CLabel>
-                    <CInput
-                      id="name"
-                      required
-                      onChange={updateForm}
-                      onChange={updateForm}
-                      value={form.name}
-                    />
-                  </CFormGroup>
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="ccnumber">Street Address</CLabel>
-                    <CInput
-                      id="strAddress"
-                      required
-                      onChange={updateForm}
-                      value={form.strAddress}
-                    />
-                  </CFormGroup>
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol xs="4">
-                  <CFormGroup>
-                    <CLabel htmlFor="ccmonth">City</CLabel>
-                    <CInput
-                      id="city"
-                      required
-                      onChange={updateForm}
-                      value={form.city}
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="4">
-                  <CFormGroup>
-                    <CLabel htmlFor="state">State</CLabel>
-                    <CSelect
-                      custom
-                      name="state"
-                      id="state"
-                      onChange={updateForm}
-                      value={form.state}
-                      required
-                    >
-                      <option>Select State</option>
-                      <option value="AL">Alabama</option>
-                      <option value="AK">Alaska</option>
-                      <option value="AZ">Arizona</option>
-                      <option value="AR">Arkansas</option>
-                      <option value="CA">California</option>
-                      <option value="CO">Colorado</option>
-                      <option value="CT">Connecticut</option>
-                      <option value="DE">Delaware</option>
-                      <option value="DC">District Of Columbia</option>
-                      <option value="FL">Florida</option>
-                      <option value="GA">Georgia</option>
-                      <option value="HI">Hawaii</option>
-                      <option value="ID">Idaho</option>
-                      <option value="IL">Illinois</option>
-                      <option value="IN">Indiana</option>
-                      <option value="IA">Iowa</option>
-                      <option value="KS">Kansas</option>
-                      <option value="KY">Kentucky</option>
-                      <option value="LA">Louisiana</option>
-                      <option value="ME">Maine</option>
-                      <option value="MD">Maryland</option>
-                      <option value="MA">Massachusetts</option>
-                      <option value="MI">Michigan</option>
-                      <option value="MN">Minnesota</option>
-                      <option value="MS">Mississippi</option>
-                      <option value="MO">Missouri</option>
-                      <option value="MT">Montana</option>
-                      <option value="NE">Nebraska</option>
-                      <option value="NV">Nevada</option>
-                      <option value="NH">New Hampshire</option>
-                      <option value="NJ">New Jersey</option>
-                      <option value="NM">New Mexico</option>
-                      <option value="NY">New York</option>
-                      <option value="NC">North Carolina</option>
-                      <option value="ND">North Dakota</option>
-                      <option value="OH">Ohio</option>
-                      <option value="OK">Oklahoma</option>
-                      <option value="OR">Oregon</option>
-                      <option value="PA">Pennsylvania</option>
-                      <option value="RI">Rhode Island</option>
-                      <option value="SC">South Carolina</option>
-                      <option value="SD">South Dakota</option>
-                      <option value="TN">Tennessee</option>
-                      <option value="TX">Texas</option>
-                      <option value="UT">Utah</option>
-                      <option value="VT">Vermont</option>
-                      <option value="VA">Virginia</option>
-                      <option value="WA">Washington</option>
-                      <option value="WV">West Virginia</option>
-                      <option value="WI">Wisconsin</option>
-                      <option value="WY">Wyoming</option>
-                    </CSelect>
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="4">
-                  <CFormGroup>
-                    <CLabel htmlFor="zipCode">Zip Code</CLabel>
-                    <CInput
-                      id="zipCode"
-                      required
-                      onChange={updateForm}
-                      value={form.zipCode}
-                    />
-                  </CFormGroup>
-                </CCol>
-              </CRow>
-              <CFormGroup className="form-actions">
+      <CDataTable
+        items={tempData}
+        fields={tempFields}
+        columnFilter
+        tableFilter
+        columnHeaderSlot={{ name: "Organization's Name" }}
+        //   footer
+        itemsPerPageSelect
+        itemsPerPage={5}
+        hover
+        sorter
+        pagination
+        scopedSlots={{
+          status: (item) => (
+            <td>
+              <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+            </td>
+          ),
+          // show_details: (item, index) => {
+          //   return (
+          //     <td className="py-2">
+          //       <CButton
+          //         color="primary"
+          //         variant="outline"
+          //         shape="square"
+          //         size="sm"
+          //         onClick={() => {
+          //           toggleDetails(index);
+          //         }}
+          //       >
+          //         {details.includes(index) ? "Hide" : "Show"}
+          //       </CButton>
+          //     </td>
+          //   );
+          // },
+          // details: (item, index) => {
+          //   return (
+          //     <CCollapse show={details.includes(index)}>
+          //       <CCardBody>
+          //         <h4>{item.username}</h4>
+          //         <p className="text-muted">User since: {item.registered}</p>
+          //         <CButton size="sm" color="info">
+          //           User Settings
+          //         </CButton>
+          //         <CButton size="sm" color="danger" className="ml-1">
+          //           Delete
+          //         </CButton>
+          //       </CCardBody>
+          //     </CCollapse>
+          //   );
+          // },
+          editOptions: (item, index) => {
+            return (
+              <td style={{ display: "flex" }}>
                 <CButton
-                  type="submit"
-                  size="md"
-                  disabled={disabled}
-                  color="success"
-                  onClick={handleSubmit}
+                  color="dark"
+                  variant="outline"
+                  style={{ marginRight: "0.5em" }}
                 >
-                  Add Organization
+                  Edit
                 </CButton>
-              </CFormGroup>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
+                <CButton
+                  color="danger"
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setVisible(!visible);
+                  }}
+                >
+                  Delete
+                </CButton>
+              </td>
+            );
+          },
+        }}
+      />
+      <Modal
+        visible={visible}
+        setVisible={setVisible}
+        title={"Confirm Delete"}
+        body={`Are you sure you want to DELETE "${selectedItem.name}"?`}
+        action={"Delete"}
+        color={"danger"}
+      />
     </>
   );
 };
-
 export default Organizations;
