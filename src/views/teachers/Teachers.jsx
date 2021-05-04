@@ -58,6 +58,11 @@ const Teachers = () => {
     setDetails(newDetails);
   };
 
+  const authorizeTeacher = () => {
+    // Function with a backend call to update the teacher's authorization
+    // Modify teacher data in frontend
+  };
+
   const tempFields = [
     { key: "name", _style: { width: "30%" } },
     { key: "organization", _style: { width: "35%" } },
@@ -91,7 +96,6 @@ const Teachers = () => {
             color="dark"
             variant="outline"
             onClick={() => {
-              //   setSelectedItem(item);
               setVisible(!visible);
             }}
           >
@@ -104,8 +108,7 @@ const Teachers = () => {
             color="success"
             variant="outline"
             onClick={() => {
-              //   setSelectedItem(item);
-              setVisible(!visible);
+              authorizeTeacher();
             }}
           >
             Authorize
@@ -154,10 +157,10 @@ const Teachers = () => {
       <Modal
         visible={visible}
         setVisible={setVisible}
-        title={"Confirm Delete"}
-        body={`Are you sure you want to DELETE "${selectedItem.name}"?`}
-        action={"Delete"}
-        color={"danger"}
+        title={"Confirm Action"}
+        body={`This teacher will not be able to make new classes`}
+        action={"Continue"}
+        color={"info"}
       />
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import {
   CBadge,
   CCard,
@@ -394,6 +395,16 @@ const Organizations = () => {
           },
         }}
       />
+      <div className="text-lg-center">
+        <Link to="/organizations/add">
+          <CButton
+            style={{ fontSize: "1.15em", fontWeight: "500" }}
+            color="primary"
+          >
+            Add New Organization
+          </CButton>
+        </Link>
+      </div>
       <Modal
         visible={visible}
         setVisible={setVisible}
