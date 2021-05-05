@@ -40,4 +40,12 @@ function authPut(url, body) {
   }).then(handleResponse);
 }
 
-export { get, authGet, post, authPost, authPut };
+function authDelete(url, body) {
+  return fetch(url, {
+    method: "DELETE",
+    headers: authHeader(),
+    body: JSON.stringify(body),
+  }).then(handleResponse);
+}
+
+export { get, authGet, post, authPost, authPut, authDelete };

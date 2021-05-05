@@ -9,7 +9,15 @@ import {
   CButton,
 } from "@coreui/react";
 
-const Modal = ({ visible, setVisible, title, body, action, color }) => {
+const Modal = ({
+  visible,
+  setVisible,
+  title,
+  body,
+  action,
+  color,
+  actionFunc,
+}) => {
   //   const [visible, setVisible] = React.useState(false);
 
   return (
@@ -23,7 +31,9 @@ const Modal = ({ visible, setVisible, title, body, action, color }) => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color={color}>{action}</CButton>
+          <CButton color={color} onClick={actionFunc}>
+            {action}
+          </CButton>
         </CModalFooter>
       </CModal>
     </>

@@ -1,4 +1,4 @@
-import { authGet, post, authPost, authPut, get } from "./request";
+import { authGet, post, authPost, authPut, get, authDelete } from "./request";
 import { API } from "./routes";
 
 export default {
@@ -6,5 +6,11 @@ export default {
 
   addOrganization: (data) => {
     return authPost(API.addOrganization, data);
+  },
+  getOrganizations: () => {
+    return get(API.getOrganizations);
+  },
+  deleteOrganization: (name) => {
+    return authDelete(API.deleteOrganization, { name });
   },
 };

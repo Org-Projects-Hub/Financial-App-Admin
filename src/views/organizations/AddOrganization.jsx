@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -23,6 +24,7 @@ const Organizations = () => {
     zipCode: "",
   });
   const [disabled, setDisabled] = React.useState(true);
+  const history = useHistory();
 
   const updateDisabled = () => {
     for (let x in form) {
@@ -37,18 +39,22 @@ const Organizations = () => {
   React.useEffect(updateDisabled, [form]);
 
   const updateForm = (e) => {
-    setForm({ ...form, [e.target.id]: [e.target.value] });
+    setForm({ ...form, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = () => {
     console.table(form);
     api
-      .addOrganization(form)
+      .addOrganization({ ...form, address: form.strAddress, zip: form.zipCode })
       .then((res) => {
-        console.log("Success!");
+        if (res.success) {
+          history.push("/organizations");
+        } else {
+          window.alert(`Organization named "${form.name}" already exists!!`);
+        }
       })
       .catch((err) => {
-        console.log(err);
+        window.alert("Something went wrong!\nPlease try again.");
       });
   };
   return (

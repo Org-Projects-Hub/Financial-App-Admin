@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import {
   CBadge,
@@ -15,11 +15,54 @@ import {
 import { DocsLink } from "src/reusable";
 
 import Modal from "../../reusable/Modal";
+import api from "src/api";
 
 // import usersData from "../users/UsersData";
 const Organizations = () => {
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
+  const [details, setDetails] = React.useState([]);
+  const [data, setData] = useState([]);
+
+  /**
+   * Get Organization Data upon loading
+   */
+  useEffect(() => {
+    loadOrganizations();
+  }, []);
+
+  const loadOrganizations = () => {
+    api
+      .getOrganizations()
+      .then((res) => {
+        if (res.success) setData(res.organizations);
+        else {
+          console.log(res.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /**
+   * Delete the selected organization.
+   * The selection is in state "selectedItem"
+   */
+  const deleteOrganization = () => {
+    api
+      .deleteOrganization(selectedItem.name)
+      .then((res) => {
+        if (!res.success)
+          window.alert("Something went wrong!\nPlease try again");
+        else loadOrganizations();
+
+        setVisible(false);
+      })
+      .catch((err) => {
+        window.alert("Something went wrong!\nPlease try again");
+      });
+  };
 
   const tempData = [
     {
@@ -65,185 +108,7 @@ const Organizations = () => {
       zip: 71203,
     },
   ];
-  const usersData = [
-    {
-      id: 0,
-      name: "John Doe",
-      registered: "2018/01/01",
-      role: "Guest",
-      status: "Pending",
-    },
-    {
-      id: 1,
-      name: "Samppa Nori",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Estavan Lykos",
-      registered: "2018/02/01",
-      role: "Staff",
-      status: "Banned",
-    },
-    {
-      id: 3,
-      name: "Chetan Mohamed",
-      registered: "2018/02/01",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      id: 4,
-      name: "Derick Maximinus",
-      registered: "2018/03/01",
-      role: "Member",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      name: "Friderik Dávid",
-      registered: "2018/01/21",
-      role: "Staff",
-      status: "Active",
-    },
-    {
-      id: 6,
-      name: "Yiorgos Avraamu",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Active",
-    },
-    {
-      id: 7,
-      name: "Avram Tarasios",
-      registered: "2018/02/01",
-      role: "Staff",
-      status: "Banned",
-    },
-    {
-      id: 8,
-      name: "Quintin Ed",
-      registered: "2018/02/01",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      id: 9,
-      name: "Enéas Kwadwo",
-      registered: "2018/03/01",
-      role: "Member",
-      status: "Pending",
-    },
-    {
-      id: 10,
-      name: "Agapetus Tadeáš",
-      registered: "2018/01/21",
-      role: "Staff",
-      status: "Active",
-    },
-    {
-      id: 11,
-      name: "Carwyn Fachtna",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Active",
-    },
-    {
-      id: 12,
-      name: "Nehemiah Tatius",
-      registered: "2018/02/01",
-      role: "Staff",
-      status: "Banned",
-    },
-    {
-      id: 13,
-      name: "Ebbe Gemariah",
-      registered: "2018/02/01",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      id: 14,
-      name: "Eustorgios Amulius",
-      registered: "2018/03/01",
-      role: "Member",
-      status: "Pending",
-    },
-    {
-      id: 15,
-      name: "Leopold Gáspár",
-      registered: "2018/01/21",
-      role: "Staff",
-      status: "Active",
-    },
-    {
-      id: 16,
-      name: "Pompeius René",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Active",
-    },
-    {
-      id: 17,
-      name: "Paĉjo Jadon",
-      registered: "2018/02/01",
-      role: "Staff",
-      status: "Banned",
-    },
-    {
-      id: 18,
-      name: "Micheal Mercurius",
-      registered: "2018/02/01",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      id: 19,
-      name: "Ganesha Dubhghall",
-      registered: "2018/03/01",
-      role: "Member",
-      status: "Pending",
-    },
-    {
-      id: 20,
-      name: "Hiroto Šimun",
-      registered: "2018/01/21",
-      role: "Staff",
-      status: "Active",
-    },
-    {
-      id: 21,
-      name: "Vishnu Serghei",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Active",
-    },
-    {
-      id: 22,
-      name: "Zbyněk Phoibos",
-      registered: "2018/02/01",
-      role: "Staff",
-      status: "Banned",
-    },
-    {
-      id: 23,
-      name: "Aulus Agmundr",
-      registered: "2018/01/01",
-      role: "Member",
-      status: "Pending",
-    },
-    {
-      id: 42,
-      name: "Ford Prefect",
-      registered: "2001/05/25",
-      role: "Alien",
-      status: "Don't panic!",
-    },
-  ];
 
-  const [details, setDetails] = React.useState([]);
   // const [items, setItems] = useState(usersData)
 
   const toggleDetails = (index) => {
@@ -320,12 +185,13 @@ const Organizations = () => {
   return (
     <>
       <CDataTable
-        items={tempData}
+        items={data}
         fields={tempFields}
         columnFilter
         tableFilter
         columnHeaderSlot={{ name: "Organization's Name" }}
         //   footer
+        sorterValue={{ column: "name", asc: "true" }}
         itemsPerPageSelect
         itemsPerPage={5}
         hover
@@ -411,6 +277,7 @@ const Organizations = () => {
         title={"Confirm Delete"}
         body={`Are you sure you want to DELETE "${selectedItem.name}"?`}
         action={"Delete"}
+        actionFunc={deleteOrganization}
         color={"danger"}
       />
     </>
