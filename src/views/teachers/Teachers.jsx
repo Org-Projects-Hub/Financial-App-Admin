@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { CBadge, CDataTable, CButton } from "@coreui/react";
-import Modal from "../../reusable/Modal";
+import Modal from "src/reusable/Modal";
 import api from "src/api";
+import useStateCallback from "src/utils/useStateCallback";
 
 const Teachers = () => {
   const [visible, setVisible] = useState(false);
   const [teachers, setTeachers] = useState([]); // Data for the teachers table
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedTeacher, setSelectedTeacher] = useStateCallback(null);
 
   /**
    * Backend call to detch data about teachers
@@ -35,60 +36,48 @@ const Teachers = () => {
 
   const tempData = [
     {
+      _id: "1",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: false,
       joinedOn: "2021/04/20",
     },
     {
+      _id: "2",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: true,
       joinedOn: "2021/04/20",
     },
     {
+      _id: "3",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: false,
       joinedOn: "2021/04/20",
     },
     {
+      _id: "4",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: true,
       joinedOn: "2021/04/20",
     },
     {
+      _id: "5",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: false,
       joinedOn: "2021/04/20",
     },
     {
+      _id: "0000000023456",
       organization: "Riser Middle School",
       name: "Ashish Dev",
       isAuthorized: false,
       joinedOn: "2021/04/20",
     },
   ];
-
-  const [details, setDetails] = React.useState([]);
-
-  const toggleDetails = (index) => {
-    const position = details.indexOf(index);
-    let newDetails = details.slice();
-    if (position !== -1) {
-      newDetails.splice(position, 1);
-    } else {
-      newDetails = [...details, index];
-    }
-    setDetails(newDetails);
-  };
-
-  const authorizeTeacher = () => {
-    // Function with a backend call to update the teacher's authorization
-    // Modify teacher data in frontend
-  };
 
   const tempFields = [
     { key: "name", _style: { width: "30%" } },
@@ -104,6 +93,11 @@ const Teachers = () => {
     },
   ];
 
+  /**
+   * Gives Style name for Status column
+   * @param {boolean} status isAuthorized value of teacher
+   * @returns {string} the style name for the status column of the row
+   */
   const getBadge = (status) => {
     switch (status) {
       case true:
@@ -115,15 +109,22 @@ const Teachers = () => {
     }
   };
 
-  const getEditBtn = (status) => {
-    switch (status) {
+  /**
+   * Gives Authorize or UnAuthorize Btn for each teacher based on it's current status
+   * @param {*} item The table item (teacher)
+   * @returns {HTMLElement} Authorize or UnAuthorize Btn
+   */
+  const getEditBtn = (item) => {
+    let id = item._id;
+    switch (item.isAuthorized) {
       case true:
         return (
           <CButton
             color="dark"
             variant="outline"
             onClick={() => {
-              setVisible(!visible);
+              console.log(id);
+              setSelectedTeacher(id, () => setVisible(!visible));
             }}
           >
             Unauthorize
@@ -135,7 +136,9 @@ const Teachers = () => {
             color="success"
             variant="outline"
             onClick={() => {
-              authorizeTeacher();
+              console.log(id);
+              authOrUnAuth(id);
+              // setSelectedTeacher(id, () => ());
             }}
           >
             Authorize
@@ -144,6 +147,30 @@ const Teachers = () => {
       default:
         return null;
     }
+  };
+
+  /**
+   * Calls backend to flip the value of authorized param of the teacher
+   * Default parameter is used when called by the confirmation modal
+   */
+  const authOrUnAuth = (id = selectedTeacher) => {
+    // id = id || selectedTeacher;
+
+    window.alert(id);
+
+    // api
+    //   .authorizeTeacher(id)
+    //   .then((res) => {
+    //     if (res.success) {
+    //     } else {
+    //       window.alert("Action not allowed!");
+    //     }
+    //     setSelectedTeacher(null);
+    //   })
+    //   .catch((err) => {
+    //     window.alert("Server Error!");
+    //     setSelectedTeacher(null);
+    //   });
   };
 
   return (
@@ -175,7 +202,7 @@ const Teachers = () => {
           editOptions: (item, index) => {
             return (
               <td style={{ display: "flex", justifyContent: "center" }}>
-                {getEditBtn(item.isAuthorized)}
+                {getEditBtn(item)}
               </td>
             );
           },
@@ -188,6 +215,7 @@ const Teachers = () => {
         body={`This teacher will not be able to make new classes`}
         action={"Continue"}
         color={"info"}
+        actionFunc={() => authOrUnAuth()}
       />
     </>
   );

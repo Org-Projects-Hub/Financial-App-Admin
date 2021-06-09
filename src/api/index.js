@@ -17,4 +17,8 @@ export default {
   getTeachers: () => {
     return authGet(API.getTeachers, "");
   },
+
+  authorizeTeacher: (id) => {
+    return authPut(API.authorizeTeacher, { id });
+  },
 };

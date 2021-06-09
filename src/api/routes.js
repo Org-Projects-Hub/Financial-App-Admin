@@ -5,6 +5,7 @@ const API = {
   getOrganizations: `${URL}/organizations`,
   deleteOrganization: `${URL}/organizations`,
   getTeachers: `${URL}/users/teachers`,
+  authorizeTeacher: `${URL}/users/teachers/authorize`,
 };
 
 export { URL, API };
