@@ -1,47 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CBadge, CDataTable, CButton } from "@coreui/react";
 import Modal from "../../reusable/Modal";
+import api from "src/api";
 
 const Teachers = () => {
   const [visible, setVisible] = useState(false);
+  const [teachers, setTeachers] = useState([]); // Data for the teachers table
   const [selectedItem, setSelectedItem] = useState([]);
+
+  /**
+   * Backend call to detch data about teachers
+   */
+  useEffect(() => {
+    api
+      .getTeachers()
+      .then((res) => {
+        if (res.success) {
+          // Extract full name for each teacher
+          for (let val of res.teachers) {
+            val["name"] = val.firstName + " " + val.lastName;
+          }
+
+          setTeachers(res.teachers);
+        } else {
+          window.alert(
+            "Something went wrong in the backend! Please try again!"
+          );
+        }
+      })
+      .catch((err) => {
+        window.alert("Server Error!");
+      });
+  }, []);
 
   const tempData = [
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "unauthorized",
-      registered: "2021/04/20",
+      isAuthorized: false,
+      joinedOn: "2021/04/20",
     },
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "authorized",
-      registered: "2021/04/20",
+      isAuthorized: true,
+      joinedOn: "2021/04/20",
     },
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "unauthorized",
-      registered: "2021/04/20",
+      isAuthorized: false,
+      joinedOn: "2021/04/20",
     },
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "authorized",
-      registered: "2021/04/20",
+      isAuthorized: true,
+      joinedOn: "2021/04/20",
     },
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "unauthorized",
-      registered: "2021/04/20",
+      isAuthorized: false,
+      joinedOn: "2021/04/20",
     },
     {
       organization: "Riser Middle School",
       name: "Ashish Dev",
-      status: "unauthorized",
-      registered: "2021/04/20",
+      isAuthorized: false,
+      joinedOn: "2021/04/20",
     },
   ];
 
@@ -66,7 +93,7 @@ const Teachers = () => {
   const tempFields = [
     { key: "name", _style: { width: "30%" } },
     { key: "organization", _style: { width: "35%" } },
-    { key: "registered", _style: { width: "15%" } },
+    { key: "joinedOn", label: "Registered", _style: { width: "15%" } },
     { key: "status", _style: { width: "10%" } },
     {
       key: "editOptions",
@@ -79,9 +106,9 @@ const Teachers = () => {
 
   const getBadge = (status) => {
     switch (status) {
-      case "authorized":
+      case true:
         return "success";
-      case "unauthorized":
+      case false:
         return "secondary";
       default:
         return "primary";
@@ -90,7 +117,7 @@ const Teachers = () => {
 
   const getEditBtn = (status) => {
     switch (status) {
-      case "authorized":
+      case true:
         return (
           <CButton
             color="dark"
@@ -102,7 +129,7 @@ const Teachers = () => {
             Unauthorize
           </CButton>
         );
-      case "unauthorized":
+      case false:
         return (
           <CButton
             color="success"
@@ -138,9 +165,9 @@ const Teachers = () => {
             <td>
               <CBadge
                 style={{ fontSize: "0.8rem" }}
-                color={getBadge(item.status)}
+                color={getBadge(item.isAuthorized)}
               >
-                {item.status}
+                {item.isAuthorized ? "authorized" : "not authorized"}
               </CBadge>
             </td>
           ),
@@ -148,7 +175,7 @@ const Teachers = () => {
           editOptions: (item, index) => {
             return (
               <td style={{ display: "flex", justifyContent: "center" }}>
-                {getEditBtn(item.status)}
+                {getEditBtn(item.isAuthorized)}
               </td>
             );
           },

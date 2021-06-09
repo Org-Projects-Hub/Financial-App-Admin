@@ -13,4 +13,8 @@ export default {
   deleteOrganization: (name) => {
     return authDelete(API.deleteOrganization, { name });
   },
+
+  getTeachers: () => {
+    return authGet(API.getTeachers, "");
+  },
 };
