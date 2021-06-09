@@ -51,6 +51,9 @@ const Organizations = React.lazy(() =>
 const AddOrganization = React.lazy(() =>
   import("./views/organizations/AddOrganization")
 );
+const OrganizationDetails = React.lazy(() =>
+  import("./views/organizations/OrganizationDetails")
+);
 const CoreUIIcons = React.lazy(() =>
   import("./views/icons/coreui-icons/CoreUIIcons")
 );
@@ -78,8 +81,13 @@ const routes = [
   },
   {
     path: "/organizations/add",
-    name: "AddOrganization",
+    name: "Add Organization",
     component: AddOrganization,
+  },
+  {
+    path: "/organizations/:id",
+    name: "Organization Details",
+    component: OrganizationDetails,
   },
   {
     path: "/teachers",

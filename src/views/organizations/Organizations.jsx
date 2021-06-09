@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import {
   CBadge,
   CCard,
@@ -23,6 +23,8 @@ const Organizations = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [details, setDetails] = React.useState([]);
   const [data, setData] = useState([]);
+
+  const history = useHistory();
 
   /**
    * Get Organization Data upon loading
@@ -194,6 +196,8 @@ const Organizations = () => {
         sorterValue={{ column: "name", asc: "true" }}
         itemsPerPageSelect
         itemsPerPage={5}
+        clickableRows
+        onRowClick={(item) => history.push(`/organizations/${item._id}`)}
         hover
         sorter
         pagination
