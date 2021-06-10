@@ -21,4 +21,8 @@ export default {
   authorizeTeacher: (id) => {
     return authPut(API.authorizeTeacher, { id });
   },
+
+  organizationStats: (orgId) => {
+    return authGet(API.organizationStats, orgId);
+  },
 };
