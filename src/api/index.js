@@ -3,7 +3,12 @@ import { API } from "./routes";
 
 export default {
   //User Route
-
+  auth: () => {
+    return authGet(API.auth, "");
+  },
+  login: (code) => {
+    return get(API.login + `/${code}`);
+  },
   addOrganization: (data) => {
     return post(API.addOrganization, data);
   },

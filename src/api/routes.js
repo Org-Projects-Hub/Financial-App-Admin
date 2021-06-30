@@ -1,6 +1,8 @@
 let URL = "http://localhost:8000";
 
 const API = {
+  auth: `${URL}/admin/auth`,
+  login: `${URL}/admin/login`,
   addOrganization: `${URL}/organizations/add`,
   getOrganizations: `${URL}/organizations`,
   deleteOrganization: `${URL}/organizations`,

@@ -14,18 +14,36 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import api from "src/api";
+import { setLocalStorage } from "src/utils/others";
+import Modal from "src/reusable/Modal";
 
 const Login = () => {
   const [code, setCode] = useState("");
+  const [phase, setPhase] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+
   const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.warn("HEre");
     // Call API here
     // api
-    history.push("/");
+    api
+      .login(code)
+      .then((res) => {
+        if (res.success) {
+          setLocalStorage("finapp_admin_token", res.token);
+          history.push("/");
+        } else {
+          setShowModal(true);
+          // Something
+        }
+      })
+      .catch((err) => {
+        window.alert("Sever Error! Please try again.");
+      });
   };
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -75,6 +93,17 @@ const Login = () => {
           </CCol>
         </CRow>
       </CContainer>
+      <Modal
+        visible={showModal}
+        setVisible={setShowModal}
+        title={"Invalid Login Code"}
+        body={
+          "Please Enter the code sent to the admin email! \n Every code expires in 15 minutes. Your code might have expired. In that case, you can resend a new code."
+        }
+        action={"Resend Code"}
+        color={"warning"}
+        actionFunc={() => {}}
+      />
     </div>
   );
 };
