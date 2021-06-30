@@ -158,25 +158,25 @@ const Teachers = () => {
 
     window.alert(id);
 
-    // api
-    //   .authorizeTeacher(id)
-    //   .then((res) => {
-    //     if (res.success) {
-    //     } else {
-    //       window.alert("Action not allowed!");
-    //     }
-    //     setSelectedTeacher(null);
-    //   })
-    //   .catch((err) => {
-    //     window.alert("Server Error!");
-    //     setSelectedTeacher(null);
-    //   });
+    api
+      .authorizeTeacher(id)
+      .then((res) => {
+        if (res.success) {
+        } else {
+          window.alert("Action not allowed!");
+        }
+        setSelectedTeacher(null);
+      })
+      .catch((err) => {
+        window.alert("Server Error!");
+        setSelectedTeacher(null);
+      });
   };
 
   return (
     <>
       <CDataTable
-        items={tempData}
+        items={teachers}
         fields={tempFields}
         columnFilter
         tableFilter

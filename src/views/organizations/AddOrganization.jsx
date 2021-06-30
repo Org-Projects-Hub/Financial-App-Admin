@@ -45,7 +45,7 @@ const Organizations = () => {
   const handleSubmit = () => {
     console.table(form);
     api
-      .addOrganization({ ...form, address: form.strAddress, zip: form.zipCode })
+      .addOrganization(form)
       .then((res) => {
         if (res.success) {
           history.push("/organizations");

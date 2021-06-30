@@ -5,7 +5,7 @@ export default {
   //User Route
 
   addOrganization: (data) => {
-    return authPost(API.addOrganization, data);
+    return post(API.addOrganization, data);
   },
   getOrganizations: () => {
     return get(API.getOrganizations);
@@ -15,7 +15,7 @@ export default {
   },
 
   getTeachers: () => {
-    return authGet(API.getTeachers, "");
+    return get(API.getTeachers, "");
   },
 
   authorizeTeacher: (id) => {
