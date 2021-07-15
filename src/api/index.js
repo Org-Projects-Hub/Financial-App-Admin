@@ -4,7 +4,10 @@ import { API } from "./routes";
 export default {
   //User Route
   auth: () => {
-    return authGet(API.auth, "");
+    return authPost(API.auth, {});
+  },
+  sendLoginCode: () => {
+    return get(API.login, "");
   },
   login: (code) => {
     return get(API.login + `/${code}`);

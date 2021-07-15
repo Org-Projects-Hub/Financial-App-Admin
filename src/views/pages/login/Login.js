@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
   CButton,
@@ -23,6 +23,22 @@ const Login = () => {
   const [showModal, setShowModal] = useState(false);
 
   const history = useHistory();
+
+  useEffect(() => {
+    // Make the backend send a login code to admin email
+    api
+      .sendLoginCode()
+      .then((res) => {
+        if (!res.success) {
+          throw new Error("Code not sent");
+        }
+      })
+      .catch((err) =>
+        window.alert(
+          "Server Error! This might be because of too many invalid login attempts. Try again after a few minutes!"
+        )
+      );
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();

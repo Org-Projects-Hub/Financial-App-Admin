@@ -20,61 +20,70 @@ const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
 const App = () => {
-  const [ready, setReady] = useState(true); // set to false
+  const [ready, setReady] = useState(false); // set to false
 
   const history = useHistory();
 
   useEffect(() => {
     // Auth Call
-    // api.auth()
-    // .then(res => {
-    //   if(!res.success){
-    //     setLocalStorage("finapp_admin_token", null)
-    //      history.push("/login")
-    //   }
-    //  setReady(true)
-    // }).catch(err => {
-    //   window.alert("Server Error!")
-    // })
+    // Send to login page if token exppired. If a valiud token exists, avoid login page
+    api
+      .auth()
+      .then((res) => {
+        if (window.location.pathname === "/login" && res.success) {
+          history.push("/");
+        } else if (!res.success) {
+          setLocalStorage("finapp_admin_token", null);
+          history.push("/login");
+        }
+        setReady(true);
+      })
+      .catch((err) => {
+        history.push("/login");
+        setReady(true);
+      });
   }, []);
+
   return (
-    <BrowserRouter>
-      <React.Suspense fallback={loading}>
-        <Switch>
-          <Route
-            exact
-            path="/login"
-            name="Login Page"
-            render={(props) => <Login {...props} />}
-          />
-          <Route
-            exact
-            path="/register"
-            name="Register Page"
-            render={(props) => <Register {...props} />}
-          />
-          <Route
-            exact
-            path="/404"
-            name="Page 404"
-            render={(props) => <Page404 {...props} />}
-          />
-          <Route
-            exact
-            path="/500"
-            name="Page 500"
-            render={(props) => <Page500 {...props} />}
-          />
-          {ready && (
+    // <BrowserRouter>
+    <React.Suspense fallback={loading}>
+      <Switch>
+        <Route
+          exact
+          path="/register"
+          name="Register Page"
+          render={(props) => <Register {...props} />}
+        />
+        <Route
+          exact
+          path="/404"
+          name="Page 404"
+          render={(props) => <Page404 {...props} />}
+        />
+        <Route
+          exact
+          path="/500"
+          name="Page 500"
+          render={(props) => <Page500 {...props} />}
+        />
+        {ready && (
+          <Switch>
+            <Route
+              exact
+              path="/login"
+              name="Login Page"
+              render={(props) => <Login {...props} />}
+            />
             <Route
               path="/"
               name="Home"
               render={(props) => <TheLayout {...props} />}
             />
-          )}
-        </Switch>
-      </React.Suspense>
-    </BrowserRouter>
+          </Switch>
+        )}
+      </Switch>
+    </React.Suspense>
+    // </BrowserRouter>
   );
 };
 
