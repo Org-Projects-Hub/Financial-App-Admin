@@ -10,9 +10,9 @@ const Teachers = () => {
   const [selectedTeacher, setSelectedTeacher] = useStateCallback(null);
 
   /**
-   * Backend call to detch data about teachers
+   * Backend Call for teachers info and updates "teachers" state
    */
-  useEffect(() => {
+  const retrieveTeachers = () => {
     api
       .getTeachers()
       .then((res) => {
@@ -32,6 +32,13 @@ const Teachers = () => {
       .catch((err) => {
         window.alert("Server Error!");
       });
+  };
+
+  /**
+   * Backend call to detch data about teachers
+   */
+  useEffect(() => {
+    retrieveTeachers();
   }, []);
 
   const tempData = [
@@ -80,9 +87,9 @@ const Teachers = () => {
   ];
 
   const tempFields = [
-    { key: "name", _style: { width: "30%" } },
+    { key: "name", _style: { width: "25%" } },
     { key: "organization", _style: { width: "35%" } },
-    { key: "joinedOn", label: "Registered", _style: { width: "15%" } },
+    { key: "joinedOn", label: "Registered", _style: { width: "20%" } },
     { key: "status", _style: { width: "10%" } },
     {
       key: "editOptions",
@@ -123,7 +130,6 @@ const Teachers = () => {
             color="dark"
             variant="outline"
             onClick={() => {
-              console.log(id);
               setSelectedTeacher(id, () => setVisible(!visible));
             }}
           >
@@ -136,7 +142,6 @@ const Teachers = () => {
             color="success"
             variant="outline"
             onClick={() => {
-              console.log(id);
               authOrUnAuth(id);
               // setSelectedTeacher(id, () => ());
             }}
@@ -154,14 +159,11 @@ const Teachers = () => {
    * Default parameter is used when called by the confirmation modal
    */
   const authOrUnAuth = (id = selectedTeacher) => {
-    // id = id || selectedTeacher;
-
-    window.alert(id);
-
     api
       .authorizeTeacher(id)
       .then((res) => {
         if (res.success) {
+          retrieveTeachers();
         } else {
           window.alert("Action not allowed!");
         }
@@ -188,6 +190,9 @@ const Teachers = () => {
         sorter
         pagination
         scopedSlots={{
+          joinedOn: (item) => {
+            return <td>{new Date(item.joinedOn).toLocaleString()}</td>;
+          },
           status: (item) => (
             <td>
               <CBadge
@@ -215,7 +220,10 @@ const Teachers = () => {
         body={`This teacher will not be able to make new classes`}
         action={"Continue"}
         color={"info"}
-        actionFunc={() => authOrUnAuth()}
+        actionFunc={() => {
+          authOrUnAuth();
+          setVisible(false);
+        }}
       />
     </>
   );
