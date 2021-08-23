@@ -16,9 +16,6 @@ import CIcon from "@coreui/icons-react";
 
 import UserChart from "../charts/UserChart.js";
 
-const WidgetsDropdown = lazy(() => import("../widgets/WidgetsDropdown.js"));
-const WidgetsBrand = lazy(() => import("../widgets/WidgetsBrand.js"));
-
 const Dashboard = () => {
   const [dataInterval, setDataInterval] = useState("Month");
 

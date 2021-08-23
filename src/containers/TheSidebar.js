@@ -27,18 +27,24 @@ const TheSidebar = () => {
       show={show}
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
-      <CSidebarBrand className="d-md-down-none" to="/">
+      <CSidebarBrand to="/">
         <img src={logo} className="c-sidebar-brand-full" height={35} alt="" />
+        <img
+          src={logo}
+          className="c-sidebar-brand-minimized"
+          height={35}
+          alt=""
+        />
         {/* <CIcon
           className="c-sidebar-brand-full"
           name="logo-negative"
           height={35}
         /> */}
-        <CIcon
+        {/* <CIcon
           className="c-sidebar-brand-minimized"
           name="sygnet"
           height={35}
-        />
+        /> */}
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
