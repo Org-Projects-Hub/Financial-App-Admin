@@ -14,6 +14,7 @@ import {
 
 import CIcon from "@coreui/icons-react";
 import logo from "src/assets/united_logo.svg";
+import logo2 from "src/assets/united_logo_hand.png";
 
 // sidebar nav config
 import navigation from "./_nav";
@@ -30,7 +31,7 @@ const TheSidebar = () => {
       <CSidebarBrand to="/">
         <img src={logo} className="c-sidebar-brand-full" height={35} alt="" />
         <img
-          src={logo}
+          src={logo2}
           className="c-sidebar-brand-minimized"
           height={35}
           alt=""

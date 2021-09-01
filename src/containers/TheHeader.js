@@ -23,6 +23,7 @@ import {
   TheHeaderDropdownNotif,
   TheHeaderDropdownTasks,
 } from "./index";
+import { logoutAndRedirect } from "src/utils/logout";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
@@ -58,24 +59,21 @@ const TheHeader = () => {
         <img src={logo} height={35} alt="" />
       </CHeaderBrand>
 
-      {/* <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem>
-      </CHeaderNav> */}
+      <CHeaderNav className="d-md-down-none mr-auto"></CHeaderNav>
 
-      {/* <CHeaderNav className="px-3">
-        <TheHeaderDropdownNotif />
-        <TheHeaderDropdownTasks />
-        <TheHeaderDropdownMssg />
-        <TheHeaderDropdown />
-      </CHeaderNav> */}
+      <CHeaderNav className="px-3">
+        <CLink
+          className="c-subheader-nav-link"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            logoutAndRedirect();
+          }}
+        >
+          <CIcon name="account-logout" alt="Logout" />
+          &nbsp;Logout
+        </CLink>
+      </CHeaderNav>
 
       <CSubheader className="px-3 justify-content-between">
         <CBreadcrumbRouter
