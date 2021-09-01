@@ -27,7 +27,7 @@ const routes = [
     component: AddOrganization,
   },
   {
-    path: "/organizations/:id",
+    path: "/organizations/:orgId",
     name: "Organization Details",
     component: OrganizationDetails,
   },

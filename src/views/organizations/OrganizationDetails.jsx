@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useParams } from "react-router-dom";
 import {
   CCard,
   CCardBody,
@@ -13,6 +13,8 @@ import { CChartBar } from "@coreui/react-chartjs";
 import api from "src/api";
 
 const OrganizationDetails = () => {
+  let { orgId } = useParams();
+
   const [data, setData] = useState([]);
   const [overview, setOverview] = useState({
     name: "Organization's Name",
@@ -45,40 +47,40 @@ const OrganizationDetails = () => {
    * Backend Connection
    */
   useEffect(() => {
-    // api.organizationStats().then(res => {
-    //   if (res.success){
-    //     // tempdata = res.data
-    //      //setOverview(res.overview)
-    //   }
-    //   else{
-    //     window.alert("Something went wrong! Please refresh the page and try again!")
-    //     console.log(res.message);
-    //   }
-    // })
-    // .catch(err => window.alert("Server Error"))
+    api
+      .organizationStats(orgId)
+      .then((res) => {
+        if (res.success) {
+          let data = [];
 
-    //Everything below show be in a .then function
-    let data = [];
+          for (let entry of res.data) {
+            data.push([
+              {
+                label: "Before Simulation",
+                backgroundColor: "#f87979",
+                data: entry[0],
+              },
+              {
+                label: "After Simulation",
+                backgroundColor: "#9ad0f5",
+                data: entry[1],
+              },
+            ]);
+          }
 
-    for (let entry of tempData) {
-      data.push([
-        {
-          label: "Before Simulation",
-          backgroundColor: "#f87979",
-          data: entry[0],
-        },
-        {
-          label: "After Simulation",
-          backgroundColor: "#9ad0f5",
-          data: entry[1],
-        },
-      ]);
-    }
-
-    setData(data);
+          setData(data);
+          setOverview(res.overview);
+        } else {
+          window.alert(
+            "Something went wrong! Please refresh the page and try again!"
+          );
+          console.log(res.message);
+        }
+      })
+      .catch((err) => window.alert("Server Error"));
   }, []);
 
-  const tempData = [
+  let tempData = [
     [
       [40, 20, 12, 39, 10],
       [80, 40, 20, 12, 11],

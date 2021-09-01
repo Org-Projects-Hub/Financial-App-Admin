@@ -23,7 +23,7 @@ export default {
   },
 
   getTeachers: () => {
-    return get(API.getTeachers, "");
+    return authGet(API.getTeachers, "");
   },
 
   authorizeTeacher: (id) => {

@@ -182,10 +182,11 @@ const Teachers = () => {
         fields={tempFields}
         columnFilter
         tableFilter
+        sorterValue={{ column: "joinedOn", desc: "true" }}
         // columnHeaderSlot={{ name: "Organization's Name" }}
         //   footer
         itemsPerPageSelect
-        itemsPerPage={5}
+        itemsPerPage={10}
         hover
         sorter
         pagination
