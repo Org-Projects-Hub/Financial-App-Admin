@@ -16,6 +16,7 @@ import CIcon from "@coreui/icons-react";
 import api from "src/api";
 import { setLocalStorage } from "src/utils/others";
 import Modal from "src/reusable/Modal";
+import { logoutTimer } from "src/utils/logout";
 
 const Login = () => {
   const [code, setCode] = useState("");
@@ -50,6 +51,7 @@ const Login = () => {
         if (res.success) {
           setLocalStorage("finapp_admin_token", res.token);
           history.push("/");
+          logoutTimer();
         } else {
           setShowModal(true);
           // Something

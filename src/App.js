@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 import api from "./api";
 import "./scss/style.scss";
 import { setLocalStorage } from "./utils/others";
+import { logoutTimer } from "./utils/logout";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -33,12 +34,15 @@ const App = () => {
         if (window.location.pathname === "/login" && res.success) {
           history.push("/");
         } else if (!res.success) {
+          // logoutAndRedirect();
           setLocalStorage("finapp_admin_token", null);
           history.push("/login");
         }
+        logoutTimer();
         setReady(true);
       })
       .catch((err) => {
+        // logoutAndRedirect();
         history.push("/login");
         setReady(true);
       });
