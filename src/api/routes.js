@@ -1,4 +1,4 @@
-let URL = "http://localhost:8000";
+let URL = "https://api.uwnelafinapp.com";
 
 const API = {
   auth: `${URL}/admin/auth`,
