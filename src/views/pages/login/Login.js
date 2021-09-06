@@ -12,21 +12,37 @@ import {
   CInputGroup,
   CRow,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
 import api from "src/api";
-import { setLocalStorage } from "src/utils/others";
+import { setLocalStorage, getLocalStorage } from "src/utils/others";
 import Modal from "src/reusable/Modal";
 import { logoutTimer } from "src/utils/logout";
 
 const Login = () => {
   const [code, setCode] = useState("");
-  const [phase, setPhase] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const history = useHistory();
 
+  /**
+   * Send login code on page load if user is not already logged in
+   */
   useEffect(() => {
-    // Make the backend send a login code to admin email
+    let token = getLocalStorage("finapp_admin_token");
+
+    if (!token) {
+      sendLoginCode();
+    } else {
+      api
+        .auth()
+        .then((res) => history.push("/")) //user already logged in
+        .catch((err) => sendLoginCode());
+    }
+  }, []);
+
+  /**
+   * Make the backend send a login code to admin email
+   */
+  const sendLoginCode = () => {
     api
       .sendLoginCode()
       .then((res) => {
@@ -39,26 +55,25 @@ const Login = () => {
           "Server Error! This might be because of too many invalid login attempts. Try again after a few minutes!"
         )
       );
-  }, []);
+  };
 
+  /**
+   * Saves auth token and redirects to dashboard page is login code is correct. Also starts the logout timer.
+   * @param {*} e Submit code event
+   */
   const onSubmit = (e) => {
     e.preventDefault();
-    // Call API here
-    // api
+
     api
       .login(code)
       .then((res) => {
-        if (res.success) {
-          setLocalStorage("finapp_admin_token", res.token);
-          history.push("/");
-          logoutTimer();
-        } else {
-          setShowModal(true);
-          // Something
-        }
+        setLocalStorage("finapp_admin_token", res.token);
+        history.push("/");
+        logoutTimer();
       })
       .catch((err) => {
-        window.alert("Sever Error! Please try again.");
+        if (err.status === 401) setShowModal(true);
+        else window.alert("Sever Error! Please try again in a while.");
       });
   };
 
@@ -120,7 +135,10 @@ const Login = () => {
         }
         action={"Resend Code"}
         color={"warning"}
-        actionFunc={() => {}}
+        actionFunc={() => {
+          sendLoginCode();
+          setShowModal(false);
+        }}
       />
     </div>
   );
