@@ -2,7 +2,8 @@ import { authHeader, header } from "./header";
 
 const handleResponse = async (response) => {
   let res = await response.json();
-  if (!response.ok) throw Error(`${res.message}`);
+  if (!response.ok) throw { ...res, status: response.status };
+
   return res;
 };
 
