@@ -16,21 +16,18 @@ const Teachers = () => {
     api
       .getTeachers()
       .then((res) => {
-        if (res.success) {
-          // Extract full name for each teacher
-          for (let val of res.teachers) {
-            val["name"] = val.firstName + " " + val.lastName;
-          }
-
-          setTeachers(res.teachers);
-        } else {
-          window.alert(
-            "Something went wrong in the backend! Please try again!"
-          );
+        // Extract full name for each teacher
+        for (let val of res.teachers) {
+          val["name"] = val.firstName + " " + val.lastName;
         }
+
+        setTeachers(res.teachers);
       })
       .catch((err) => {
-        window.alert("Server Error!");
+        // Frontend can't connect to the server
+        window.alert(
+          "Server Error! Can't conenct to server. Please try again."
+        );
       });
   };
 
@@ -162,17 +159,13 @@ const Teachers = () => {
     api
       .authorizeTeacher(id)
       .then((res) => {
-        if (res.success) {
-          retrieveTeachers();
-        } else {
-          window.alert("Action not allowed!");
-        }
-        setSelectedTeacher(null);
+        retrieveTeachers();
       })
       .catch((err) => {
-        window.alert("Server Error!");
-        setSelectedTeacher(null);
+        window.alert("Server Error! Please refresh your page and try again.");
       });
+
+    setSelectedTeacher(null);
   };
 
   return (

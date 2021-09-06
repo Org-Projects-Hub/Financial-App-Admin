@@ -23,13 +23,12 @@ const Organizations = () => {
     api
       .getOrganizations()
       .then((res) => {
-        if (res.success) setData(res.organizations);
-        else {
-          console.log(res.message);
-        }
+        setData(res.organizations);
       })
       .catch((err) => {
-        console.log(err);
+        window.alert(
+          "Server Error! Can't conenct to server. Please try again."
+        );
       });
   };
 

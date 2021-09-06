@@ -50,34 +50,31 @@ const OrganizationDetails = () => {
     api
       .organizationStats(orgId)
       .then((res) => {
-        if (res.success) {
-          let data = [];
+        let data = [];
 
-          for (let entry of res.data) {
-            data.push([
-              {
-                label: "Before Simulation",
-                backgroundColor: "#f87979",
-                data: entry[0],
-              },
-              {
-                label: "After Simulation",
-                backgroundColor: "#9ad0f5",
-                data: entry[1],
-              },
-            ]);
-          }
-
-          setData(data);
-          setOverview(res.overview);
-        } else {
-          window.alert(
-            "Something went wrong! Please refresh the page and try again!"
-          );
-          console.log(res.message);
+        for (let entry of res.data) {
+          data.push([
+            {
+              label: "Before Simulation",
+              backgroundColor: "#f87979",
+              data: entry[0],
+            },
+            {
+              label: "After Simulation",
+              backgroundColor: "#9ad0f5",
+              data: entry[1],
+            },
+          ]);
         }
+
+        setData(data);
+        setOverview(res.overview);
       })
-      .catch((err) => window.alert("Server Error"));
+      .catch((err) =>
+        window.alert(
+          "Something went wrong! Please refresh the page and try again!"
+        )
+      );
   }, []);
 
   let tempData = [
