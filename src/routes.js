@@ -1,7 +1,7 @@
 import React from "react";
 import Teachers from "./views/teachers/Teachers";
 
-const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
+import Dashboard from "./views/dashboard/Dashboard";
 import Organizations from "./views/organizations/Organizations";
 import AddOrganization from "./views/organizations/AddOrganization";
 import OrganizationDetails from "./views/organizations/OrganizationDetails";
