@@ -2,15 +2,9 @@ import React from "react";
 import Teachers from "./views/teachers/Teachers";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
-const Organizations = React.lazy(() =>
-  import("./views/organizations/Organizations")
-);
-const AddOrganization = React.lazy(() =>
-  import("./views/organizations/AddOrganization")
-);
-const OrganizationDetails = React.lazy(() =>
-  import("./views/organizations/OrganizationDetails")
-);
+import Organizations from "./views/organizations/Organizations";
+import AddOrganization from "./views/organizations/AddOrganization";
+import OrganizationDetails from "./views/organizations/OrganizationDetails";
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
