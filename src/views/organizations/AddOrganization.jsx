@@ -15,7 +15,7 @@ import {
 
 import api from "src/api";
 
-const Organizations = () => {
+const AddOrganization = () => {
   const [form, setForm] = React.useState({
     name: "",
     strAddress: "",
@@ -202,4 +202,4 @@ const Organizations = () => {
   );
 };
 
-export default Organizations;
+export default AddOrganization;
