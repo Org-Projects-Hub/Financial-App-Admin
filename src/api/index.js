@@ -13,7 +13,7 @@ export default {
     return get(API.login + `/${code}`);
   },
   addOrganization: (data) => {
-    return post(API.addOrganization, data);
+    return authPost(API.addOrganization, data);
   },
   getOrganizations: () => {
     return get(API.getOrganizations);
