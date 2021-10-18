@@ -169,7 +169,8 @@ const OrganizationDetails = () => {
             flush
           >
             <CListGroupItem>
-              Total No. of Students: <strong>{overview.nStudents}</strong>
+              Total No. of Students:{" "}
+              <strong>{overview.nStudentsCompletedSurvey}</strong>
             </CListGroupItem>
             <CListGroupItem>
               Total No. of Teachers: <strong>{overview.nTeachers}</strong>
